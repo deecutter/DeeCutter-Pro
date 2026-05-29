@@ -8,7 +8,8 @@ const fs = require('fs');
 const os = require('os');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
+
 app.use(cors());
 app.use(express.json());
 
@@ -18,15 +19,31 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-const ytDlpPath = path.join(__dirname, 'yt-dlp.exe');
+const isWin = process.platform === 'win32';
+const ytDlpPath = isWin ? path.join(__dirname, 'yt-dlp.exe') : path.join(__dirname, 'yt-dlp');
 const ytDlpWrap = new YtDlpWrap(ytDlpPath);
+
+// دالة سحرية لتنزيل نسخة اللينكس تلقائياً إذا چان الموقع على سيرفر Render
+async function ensureYtDlp() {
+    if (!isWin && !fs.existsSync(ytDlpPath)) {
+        console.log('⏳ Detecting Linux environment... Downloading yt-dlp binary...');
+        try {
+            await YtDlpWrap.downloadFromGithub(ytDlpPath);
+            fs.chmodSync(ytDlpPath, '755'); // أهم خطوة: إعطاء صلاحية التشغيل لنظام لينكس
+            console.log('✅ yt-dlp downloaded successfully and ready for Linux!');
+        } catch (err) {
+            console.error('❌ Failed to download yt-dlp binary:', err.message);
+        }
+    }
+}
+ensureYtDlp();
 
 const progressClients = new Map();
 
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`=========================================`);
+app.listen(PORT, () => {
+    console.log(`🚀 ==============================================`);
     console.log(`🚀 DeeCutter-Pro Live Progress Engine is ready!`);
-    console.log(`=========================================`);
+    console.log(`🚀 ==============================================`);
 });
 
 // قناة البث المباشر للعداد للمتصفح (SSE)
