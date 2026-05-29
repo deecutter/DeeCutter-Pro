@@ -8,8 +8,7 @@ const fs = require('fs');
 const os = require('os');
 
 const app = express();
-const PORT = 3000;
-
+const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
@@ -24,10 +23,10 @@ const ytDlpWrap = new YtDlpWrap(ytDlpPath);
 
 const progressClients = new Map();
 
-app.listen(PORT, () => {
-    console.log(`🚀 ==============================================`);
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`=========================================`);
     console.log(`🚀 DeeCutter-Pro Live Progress Engine is ready!`);
-    console.log(`🚀 ==============================================`);
+    console.log(`=========================================`);
 });
 
 // قناة البث المباشر للعداد للمتصفح (SSE)
