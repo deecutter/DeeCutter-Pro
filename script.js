@@ -345,7 +345,7 @@ function analyzeVideoLink() {
     updateTimelineProgress();
     fetchVideoTitle(videoLink, data);
 
-    fetch('http://localhost:3000/api/analyze-video', {
+    fetch('https://deecutter-pro.onrender.com/api/analyze-video', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: videoLink })
@@ -507,7 +507,7 @@ function handleExecuteTrimButtonClick() {
     }
 
     // فتح خط الاتصال الحي والمستمر (SSE) مع السيرفر لالتقاط العداد
-    const progressSource = new EventSource(`http://localhost:3000/api/progress/${clientId}`);
+    const progressSource = new EventSource(`https://deecutter-pro.onrender.com/api/progress/${clientId}`);
     
     progressSource.onmessage = function(event) {
         const percent = event.data;
@@ -535,7 +535,7 @@ function handleExecuteTrimButtonClick() {
 
     console.log('Sending trim request with tracking ID:', trimParams);
     
-    fetch('http://localhost:3000/api/trim-video', {
+    fetch('https://deecutter-pro.onrender.com/api/trim-video', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(trimParams)
@@ -764,7 +764,7 @@ function handleFullDownloadButtonClick(e) {
     }
     
     // فتح خط الاتصال الحي والمستمر (SSE) مع السيرفر لالتقاط العداد
-    const progressSource = new EventSource(`http://localhost:3000/api/progress/${clientId}`);
+    const progressSource = new EventSource(`https://deecutter-pro.onrender.com/api/progress/${clientId}`);
     
     progressSource.onmessage = function(event) {
         const percent = event.data;
@@ -788,7 +788,7 @@ function handleFullDownloadButtonClick(e) {
         clientId: clientId
     };
     
-    fetch('http://localhost:3000/api/download-full', {
+    fetch('https://deecutter-pro.onrender.com/api/download-full', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(downloadParams)
