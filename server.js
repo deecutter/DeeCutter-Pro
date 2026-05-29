@@ -62,8 +62,7 @@ app.post('/api/analyze-video', async (req, res) => {
     const { url } = req.body;
     console.log(`\n🔍 [طلب تحليل جديد] جاري جلب الدقات الحقيقية من اليوتيوب...`);
     try {
-        const stdout = await ytDlpWrap.execPromise([url, '-J', '--no-playlist']);
-        const info = JSON.parse(stdout);
+const stdout = await ytDlpWrap.execPromise([url, '-J', '--no-playlist', '--cookies', path.join(__dirname, 'cookies.txt')]);        const info = JSON.parse(stdout);
         
         const heights = new Set();
         if (info.formats) {
@@ -88,8 +87,8 @@ app.post('/api/analyze-video', async (req, res) => {
 
 // 🟢 2. مسار الـ Trim (القص) - شغال لوز اللوز 100% ومحد تقرب صوبه
 app.post('/api/trim-video', async (req, res) => {
-    const { url, quality, format, start, end, clientId } = req.body;
-    const isMp3 = format === 'mp3'; 
+    const videoStreamUrl = await ytDlpWrap.execPromise([url, '-g', '-f', videoFormat, '--cookies', path.join(__dirname, 'cookies.txt')]);
+const audioStreamUrl = await ytDlpWrap.execPromise([url, '-g', '-f', 'bestaudio', '--cookies', path.join(__dirname, 'cookies.txt')]); 
     
     console.log(`\n🎬 [طلب قص جديد] جاري المعالجة بصيغة: ${isMp3 ? 'موسيقى MP3 🎵' : 'فيديو MP4 📺'}`);
 
@@ -171,6 +170,7 @@ app.post('/api/download-full', async (req, res) => {
 
     try {
         let dlpArgs = [url, '--no-playlist', '--ffmpeg-location', path.dirname(ffmpegPath)];
+        dlpArgs.push('--cookies', path.join(__dirname, 'cookies.txt'));
         
         if (isMp3) {
             dlpArgs.push('-x', '--audio-format', 'mp3', '--audio-quality', '2');
