@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=device-width, initial-scale=1.0">
+    <title>DEE CUTTER</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700;900&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="/manifest.json">
+
+<meta name="description" content="Dee Cutter Pro - Free online tool to trim and download YouTube videos in high quality MP4 and MP3.">
+<meta name="keywords" content="قص فيديو, تحميل من اليوتيوب, dee cutter, youtube cutter, video trimmer online, تحميل صوت">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo-wrapper">
+                <img src="logo.png" alt="DEE CUTTER" class="main-logo">
+            </div>
+            <div class="menu-wrapper">
+                <button class="hamburger-btn" id="menuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="lang-dropdown" id="langDropdown">
+                    <button onclick="setLanguage('ar')">العربية</button>
+                    <button onclick="setLanguage('en')">English</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="main-card">
+            <h2 id="mainHeading">Your Smart Tool to Trim & Download Video</h2>
+            <p id="subHeading">Paste the link, select your favorite segment, and download in high quality</p>
+            
+            <form id="urlForm" onsubmit="event.preventDefault();" class="input-group">
+                <input type="text" id="videoLink" placeholder="Paste YouTube video link here...">
+                <button id="fetchBtn" type="button">Analyze Link</button>
+            </form>
+            
+            <div id="previewCard" class="preview-card" style="display: none;">
+                <div class="video-preview-wrapper">
+                    <img id="videoThumb" src="" alt="Video thumbnail">
+                </div>
+                <div id="youtubePlayerContainer" style="display: none; width: 100%; max-width: 480px; margin: 0 auto 15px auto;"></div>
+                <h3 id="videoTitle"></h3>
+                
+                <div class="options-group">
+                    <!-- تم إفراغ الخيارات الثابتة هنا لتُبنى برمجياً حسب جودة الفيديو الأصلي -->
+                    <select id="videoQuality">
+                        <option value="" disabled selected id="qualityPlaceholder">جاري جلب الجودات...</option>
+                    </select>
+                    <select id="videoFormat">
+                        <option value="" disabled selected id="formatPlaceholder">الصيغة: MP4</option>
+                        <option value="mp4" selected>MP4 (فيديو)</option>
+                        <option value="mp3">MP3 (صوت)</option>
+                    </select>
+                </div>
+                
+                <div id="timeFieldsWrapper" style="display: none; margin-top: 25px; padding-top: 20px; border-top: 2px dashed #90ADC6;">
+                    <div class="timeline-container" style="position: relative; width: 90%; margin: 20px auto 30px auto;">
+                        <div class="timeline-track" style="position: absolute; height: 6px; background: #90ADC6; width: 100%; top: 50%; transform: translateY(-50%); border-radius: 3px; z-index: 1;"></div>
+                        <div class="timeline-progress" id="timelineProgress" style="position: absolute; height: 6px; background: #3d1a5a; width: 100%; top: 50%; transform: translateY(-50%); border-radius: 3px; z-index: 2;"></div>
+                        <input type="range" id="rangeStart" min="0" max="100" value="0" class="slider-thumb" style="position: absolute; width: 100%; pointer-events: none; appearance: none; -webkit-appearance: none; background: none; z-index: 3; outline: none; top: 50%; transform: translateY(-50%);">
+                        <input type="range" id="rangeEnd" min="0" max="100" value="100" class="slider-thumb" style="position: absolute; width: 100%; pointer-events: none; appearance: none; -webkit-appearance: none; background: none; z-index: 4; outline: none; top: 50%; transform: translateY(-50%);">
+                    </div>
+
+                    <div class="time-inputs-row" style="display: flex; justify-content: center; gap: 20px; margin-bottom: 20px;">
+                        <div class="time-box" style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                            <label style="font-size: 14px; color: #555875; font-weight: bold;" id="startTimeLabel">وقت البدء</label>
+                            <input type="text" id="startTimeInput" value="00:00" style="width: 110px; text-align: center; padding: 10px; border: 2px solid #90ADC6; border-radius: 10px; color: #333652; font-weight: bold; font-size: 16px; outline: none;">
+                        </div>
+                        <div class="time-box" style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                            <label style="font-size: 14px; color: #555875; font-weight: bold;" id="endTimeLabel">وقت النهاية</label>
+                            <input type="text" id="endTimeInput" value="03:30" style="width: 110px; text-align: center; padding: 10px; border: 2px solid #90ADC6; border-radius: 10px; color: #333652; font-weight: bold; font-size: 16px; outline: none;">
+                        </div>
+                    </div>
+
+                    
+
+                    <button id="executeTrimBtn" class="action-btn purple-btn" style="width: 100%; height: 52px; background-color: #3d1a5a; color: #ffffff; border: none; border-radius: 12px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px;">
+                        تحميل الجزء المحدد فقط
+                    </button>
+                </div>
+               <div id="downloadProgressContainer" style="display: none; width: 100%; margin: 20px 0; text-align: center;">
+                        <div style="width: 100%; background: #90ADC6; height: 8px; border-radius: 4px; overflow: hidden; position: relative;">
+                            <div id="downloadProgressBar" style="width: 0%; background: #3d1a5a; height: 100%; transition: width 0.1s ease;"></div>
+                        </div>
+                        <p id="downloadProgressText" style="margin-top: 8px; font-weight: bold; color: #3d1a5a; font-size: 15px;">0%</p>
+                    </div> 
+                <div class="buttons-group">
+                    <button id="fullDownloadBtn" type="button">Full Download</button>
+                    <button id="trimDownloadBtn" type="button">Trim & Download</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

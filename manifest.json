@@ -1,0 +1,21 @@
+{
+  "name": "Dee Cutter Pro",
+  "short_name": "DeeCutter",
+  "description": "Trim and download YouTube videos easily.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#3d1a5a",
+  "theme_color": "#3d1a5a",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
