@@ -64,9 +64,7 @@ app.post('/api/analyze-video', async (req, res) => {
     try {
 const stdout = await ytDlpWrap.execPromise([
             url, '-J', '--no-playlist', 
-            '--cookies', path.join(__dirname, 'cookies.txt'),
-            '--user-agent', 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1',
-            '--extractor-args', 'youtube:player_client=ios'
+            '--extractor-args', 'youtube:player_client=tvembedded'
         ]);        
         const heights = new Set();
         if (info.formats) {
@@ -93,15 +91,11 @@ const stdout = await ytDlpWrap.execPromise([
 app.post('/api/trim-video', async (req, res) => {
    const videoStreamUrl = await ytDlpWrap.execPromise([
             url, '-g', '-f', videoFormat, 
-            '--cookies', path.join(__dirname, 'cookies.txt'),
-            '--user-agent', 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1',
-            '--extractor-args', 'youtube:player_client=ios'
+            '--extractor-args', 'youtube:player_client=tvembedded'
         ]);
         const audioStreamUrl = await ytDlpWrap.execPromise([
             url, '-g', '-f', 'bestaudio', 
-            '--cookies', path.join(__dirname, 'cookies.txt'),
-            '--user-agent', 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1',
-            '--extractor-args', 'youtube:player_client=ios'
+            '--extractor-args', 'youtube:player_client=tvembedded'
         ]);
     console.log(`\n🎬 [طلب قص جديد] جاري المعالجة بصيغة: ${isMp3 ? 'موسيقى MP3 🎵' : 'فيديو MP4 📺'}`);
 
@@ -183,9 +177,7 @@ app.post('/api/download-full', async (req, res) => {
 
     try {
         let dlpArgs = [url, '--no-playlist', '--ffmpeg-location', path.dirname(ffmpegPath)];
-        dlpArgs.push('--cookies', path.join(__dirname, 'cookies.txt'));
-        dlpArgs.push('--user-agent', 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1');
-        dlpArgs.push('--extractor-args', 'youtube:player_client=ios');
+        dlpArgs.push('--extractor-args', 'youtube:player_client=tvembedded');
         
         if (isMp3) {
             dlpArgs.push('-x', '--audio-format', 'mp3', '--audio-quality', '2');
