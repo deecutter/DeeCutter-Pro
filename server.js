@@ -65,8 +65,8 @@ app.post('/api/analyze-video', async (req, res) => {
 const stdout = await ytDlpWrap.execPromise([
             url, '-J', '--no-playlist', 
             '--cookies', path.join(__dirname, 'cookies.txt'),
-            '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
-            '--extractor-args', 'youtube:player_client=android,web'
+            '--user-agent', 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1',
+            '--extractor-args', 'youtube:player_client=ios'
         ]);        
         const heights = new Set();
         if (info.formats) {
@@ -94,14 +94,14 @@ app.post('/api/trim-video', async (req, res) => {
    const videoStreamUrl = await ytDlpWrap.execPromise([
             url, '-g', '-f', videoFormat, 
             '--cookies', path.join(__dirname, 'cookies.txt'),
-            '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
-            '--extractor-args', 'youtube:player_client=android,web'
+            '--user-agent', 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1',
+            '--extractor-args', 'youtube:player_client=ios'
         ]);
         const audioStreamUrl = await ytDlpWrap.execPromise([
             url, '-g', '-f', 'bestaudio', 
             '--cookies', path.join(__dirname, 'cookies.txt'),
-            '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
-            '--extractor-args', 'youtube:player_client=android,web'
+            '--user-agent', 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1',
+            '--extractor-args', 'youtube:player_client=ios'
         ]);
     console.log(`\n🎬 [طلب قص جديد] جاري المعالجة بصيغة: ${isMp3 ? 'موسيقى MP3 🎵' : 'فيديو MP4 📺'}`);
 
@@ -184,8 +184,8 @@ app.post('/api/download-full', async (req, res) => {
     try {
         let dlpArgs = [url, '--no-playlist', '--ffmpeg-location', path.dirname(ffmpegPath)];
         dlpArgs.push('--cookies', path.join(__dirname, 'cookies.txt'));
-        dlpArgs.push('--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36');
-        dlpArgs.push('--extractor-args', 'youtube:player_client=android,web');
+        dlpArgs.push('--user-agent', 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1');
+        dlpArgs.push('--extractor-args', 'youtube:player_client=ios');
         
         if (isMp3) {
             dlpArgs.push('-x', '--audio-format', 'mp3', '--audio-quality', '2');
