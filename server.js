@@ -64,8 +64,9 @@ app.post('/api/analyze-video', async (req, res) => {
     try {
 const stdout = await ytDlpWrap.execPromise([
             url, '-J', '--no-playlist', 
-            '--extractor-args', 'youtube:player_client=tvembedded'
-        ]);        
+            '--extractor-args', 'youtube:player_client=tvembedded',
+            '--js-runtimes', 'node'
+        ]);       
         const heights = new Set();
         if (info.formats) {
             info.formats.forEach(f => {
@@ -91,11 +92,13 @@ const stdout = await ytDlpWrap.execPromise([
 app.post('/api/trim-video', async (req, res) => {
    const videoStreamUrl = await ytDlpWrap.execPromise([
             url, '-g', '-f', videoFormat, 
-            '--extractor-args', 'youtube:player_client=tvembedded'
+            '--extractor-args', 'youtube:player_client=tvembedded',
+            '--js-runtimes', 'node'
         ]);
         const audioStreamUrl = await ytDlpWrap.execPromise([
             url, '-g', '-f', 'bestaudio', 
-            '--extractor-args', 'youtube:player_client=tvembedded'
+            '--extractor-args', 'youtube:player_client=tvembedded',
+            '--js-runtimes', 'node'
         ]);
     console.log(`\n🎬 [طلب قص جديد] جاري المعالجة بصيغة: ${isMp3 ? 'موسيقى MP3 🎵' : 'فيديو MP4 📺'}`);
 
@@ -177,8 +180,8 @@ app.post('/api/download-full', async (req, res) => {
 
     try {
         let dlpArgs = [url, '--no-playlist', '--ffmpeg-location', path.dirname(ffmpegPath)];
-        dlpArgs.push('--extractor-args', 'youtube:player_client=tvembedded');
-        
+dlpArgs.push('--extractor-args', 'youtube:player_client=tvembedded');
+        dlpArgs.push('--js-runtimes', 'node');        
         if (isMp3) {
             dlpArgs.push('-x', '--audio-format', 'mp3', '--audio-quality', '2');
         } else {
